@@ -1,24 +1,23 @@
-struct  CustomSmartPointer {
-    value: String,
+enum List {
+    Cons(i32, Rc<List>),
+    Nil,
 }
+use List::{Cons, Nil};
+use std::rc::Rc;
 
-impl Drop for CustomSmartPointer {
-    fn drop(&mut self) {
-        println!("Dropping CustomSmartPointer with value: {}", self.value);
+fn main(){
+    let a = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(List::Nil)))));
+
+    println!("a has {} strong references", Rc::strong_count(&a));
+
+    let b = Rc::new(List::Cons(3,Rc::clone(&a)));
+
+    println!("a has {} strong references", Rc::strong_count(&a));
+    {
+    let c = Rc::new(List::Cons(4, Rc::clone(&a)));
+    println!("a has {} strong references", Rc::strong_count(&a));
+
     }
-}
+    println!("a has {} strong references after c out of scope", Rc::strong_count(&a));
 
-
-fn main() {
-
-    let c = CustomSmartPointer {
-        value: String::from("Hello, Rust!"),
-    };
-    drop(c);
-
-    let d = CustomSmartPointer{
-        value: String::from("Goodbye, Rust!"),
-    };
-
-    //println!("CustomSmartPointer created with value: {}", c.value);
 }
