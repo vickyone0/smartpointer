@@ -14,10 +14,11 @@ fn main() {
     let c = CustomSmartPointer {
         value: String::from("Hello, Rust!"),
     };
+    drop(c);
 
     let d = CustomSmartPointer{
         value: String::from("Goodbye, Rust!"),
     };
 
-    println!("CustomSmartPointer created with value: {}", c.value);
+    //println!("CustomSmartPointer created with value: {}", c.value);
 }
