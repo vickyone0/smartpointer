@@ -1,28 +1,23 @@
+struct  CustomSmartPointer {
+    value: String,
+}
 
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("Dropping CustomSmartPointer with value: {}", self.value);
+    }
+}
 
 
 fn main() {
-    
-    let x = 5;
-    let y = MyBox::new(5);
 
-    assert_eq!(x, 5);
-    assert_eq!(*y, 5);
- 
-}
+    let c = CustomSmartPointer {
+        value: String::from("Hello, Rust!"),
+    };
 
-struct MyBox <T> (T);
-impl<T> MyBox<T> {
-    fn new(x: T) -> MyBox<T> {
-        MyBox(x)
-    }
-}
+    let d = CustomSmartPointer{
+        value: String::from("Goodbye, Rust!"),
+    };
 
-use std::ops::Deref;
-impl<T> Deref for MyBox<T> {
-    type Target = T;
-
-    fn deref(&self) -> &T {
-        &self.0
-    }
+    println!("CustomSmartPointer created with value: {}", c.value);
 }
