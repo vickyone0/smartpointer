@@ -1,5 +1,6 @@
 
 
+use std::sync::{Arc,Mutex};
 use std::thread;
 use std::time::Duration;
 
@@ -18,4 +19,28 @@ pub fn thread_example(){
     }
 
     
+}
+
+pub fn thread_with_data_increment(){
+    let mut v =vec![];
+    let counter = Arc::new(Mutex::new(0));
+
+    for i in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn( move || {
+
+            let mut num = counter.lock().unwrap();
+            *num +=1;
+
+
+        });
+        v.push(handle);
+    }
+
+    for handle in v {
+        handle.join().unwrap();
+    }
+
+    println!("Counter: {}", *counter.lock().unwrap());
+
 }

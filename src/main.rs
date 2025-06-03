@@ -1,5 +1,5 @@
-use smartpointer::tread;
-use std::sync::mpsc;
+use smartpointer::tread::{self, thread_with_data_increment};
+use std::sync::{mpsc, Mutex};
 use std::thread;
 use List::{Cons, Nil};
 use std::{
@@ -43,6 +43,13 @@ fn main() {
     println!("Got: {}", received);
 
 
+    let m = Mutex::new(5);
+    {
+        let mut num = m.lock().unwrap();
+        *num = 6;
+    } // MutexGuard is dropped here, releasing the lock
+    println!("m = {:?}", m);
+   thread_with_data_increment();
 }
 
 #[derive(Debug)]
