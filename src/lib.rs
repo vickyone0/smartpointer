@@ -37,19 +37,18 @@ mod tests {
     use super::*;
     use std::cell::RefCell;
     struct MockMessenger {
-        sent_messages:  RefCell<Vec<String>>,
+        sent_messages: RefCell<Vec<String>>,
     }
     impl MockMessenger {
         fn new() -> MockMessenger {
             MockMessenger {
-                 sent_messages: RefCell::new(vec![]),
+                sent_messages: RefCell::new(vec![]),
             }
         }
     }
     impl Messenger for MockMessenger {
         fn send(&self, message: &str) {
-            self.sent_messages.borrow_mut()
- .push(String::from(message));
+            self.sent_messages.borrow_mut().push(String::from(message));
         }
     }
     #[test]
