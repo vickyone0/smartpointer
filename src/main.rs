@@ -1,3 +1,5 @@
+use smartpointer::tread;
+use std::thread;
 use List::{Cons, Nil};
 use std::{
     cell::{Ref, RefCell},
@@ -18,6 +20,16 @@ fn main() {
     }
     println!("b rc count after changing a = {}", Rc::strong_count(&b));
     println!("a rc count after changing a = {}", Rc::strong_count(&a));
+
+
+    tread::thread_example();
+
+    let v = vec![1, 2, 3];
+
+    let handle = thread::spawn( move || {
+        println!("Here's a vector: {:?}", v);
+    });
+    handle.join().unwrap();
 }
 
 #[derive(Debug)]
