@@ -1,4 +1,5 @@
 use smartpointer::tread;
+use std::sync::mpsc;
 use std::thread;
 use List::{Cons, Nil};
 use std::{
@@ -30,6 +31,18 @@ fn main() {
         println!("Here's a vector: {:?}", v);
     });
     handle.join().unwrap();
+
+    let (tx, rx) = mpsc::channel();
+    thread::spawn(move || {
+        let val = String::from("hi");
+        tx.send(val).unwrap();
+    });
+
+
+    let received = rx.recv().unwrap();
+    println!("Got: {}", received);
+
+
 }
 
 #[derive(Debug)]
